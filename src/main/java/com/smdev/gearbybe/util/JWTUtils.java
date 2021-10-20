@@ -3,6 +3,7 @@ package com.smdev.gearbybe.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Getter;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
