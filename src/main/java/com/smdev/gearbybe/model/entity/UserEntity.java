@@ -1,5 +1,6 @@
 package com.smdev.gearbybe.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ public class UserEntity {
     private Long id;
     private String email;
     private String fullName;
+    @JsonIgnore
     private String password;
     private String phoneNumber;
     private double cash;
