@@ -19,5 +19,6 @@ public class UserEntity {
     private String phoneNumber;
     private double cash;
     private String address;
+    private UserRole role;
 
 }
