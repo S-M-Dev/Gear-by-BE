@@ -1,6 +1,6 @@
 package com.smdev.gearbybe.service;
 
-import com.smdev.gearbybe.model.dto.JwtResponse;
+import com.smdev.gearbybe.model.dto.response.JwtResponse;
 import com.smdev.gearbybe.model.dto.LoginRequest;
 import com.smdev.gearbybe.model.dto.RegistrationRequest;
 import com.smdev.gearbybe.model.entity.UserEntity;

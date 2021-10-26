@@ -47,8 +47,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<OrderEntity> create(OrderCreateRequest orderCreateRequest) throws CredentialNotFoundException {
-        Set<OrderPositionEntity> orderPositionEntities;
+    public Optional<OrderEntity> create(OrderCreateRequest orderCreateRequest) {
+        List<OrderPositionEntity> orderPositionEntities;
         try{
             orderPositionEntities = orderCreateRequest.getOrderPositions()
                     .stream()
@@ -61,13 +61,13 @@ public class OrderServiceImpl implements OrderService {
                         pos.setPart(part);
                         pos.setAmount(position.getAmount());
                         return pos;
-                    }).collect(Collectors.toSet());
+                    }).collect(Collectors.toList());
         } catch (OrderException e){
             return Optional.empty();
         }
 
         orderPositionEntities.forEach(orderPositionRepository::save);
-        UserEntity owner = userService.getCurrent().orElseThrow(() -> new CredentialNotFoundException("Unauthorized"));
+        UserEntity owner = userService.getCurrent().get();
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setOwner(owner);
         orderEntity.setCreateDate(new Date());

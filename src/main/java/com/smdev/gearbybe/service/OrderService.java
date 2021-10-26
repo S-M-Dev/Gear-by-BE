@@ -11,5 +11,5 @@ import java.util.Optional;
 @Service
 public interface OrderService {
     List<OrderEntity> getAllForUserById(Long userId);
-    Optional<OrderEntity> create(OrderCreateRequest orderCreateRequest) throws CredentialNotFoundException;
+    Optional<OrderEntity> create(OrderCreateRequest orderCreateRequest);
 }
