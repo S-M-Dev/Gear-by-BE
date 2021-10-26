@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,6 +22,14 @@ public class UserEntity {
     private String address;
     private UserRole role;
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
-    private List<OrderEntity> orders;
+    private Set<OrderEntity> orders = new HashSet<>();
+
+    public void addOrder(OrderEntity orderEntity){
+        orders.add(orderEntity);
+    }
+
+    public void removeOrder(OrderEntity orderEntity){
+        orders.remove(orderEntity);
+    }
 
 }

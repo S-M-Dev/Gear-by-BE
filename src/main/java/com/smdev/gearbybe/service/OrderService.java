@@ -4,10 +4,12 @@ import com.smdev.gearbybe.model.dto.OrderCreateRequest;
 import com.smdev.gearbybe.model.entity.OrderEntity;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.CredentialNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface OrderService {
     List<OrderEntity> getAllForUserById(Long userId);
-    OrderEntity create(OrderCreateRequest orderCreateRequest);
+    Optional<OrderEntity> create(OrderCreateRequest orderCreateRequest) throws CredentialNotFoundException;
 }
