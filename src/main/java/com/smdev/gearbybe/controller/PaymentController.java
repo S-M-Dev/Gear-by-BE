@@ -6,6 +6,11 @@ import com.smdev.gearbybe.model.dto.response.UserResponse;
 import com.smdev.gearbybe.model.entity.OrderEntity;
 import com.smdev.gearbybe.model.entity.UserEntity;
 import com.smdev.gearbybe.service.PaymentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +32,14 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
+    @Operation(summary = "Pay for order")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Payed successfully",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = OrderResponse.class))}),
+            @ApiResponse(responseCode = "202", description = "Not enough cash",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = OrderResponse.class))}),
+            @ApiResponse(responseCode = "404", description = "No order found for current user")
+    })
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderResponse> pay(@PathVariable Long id){
         Optional<OrderEntity> entity = paymentService.pay(id);
@@ -39,6 +52,11 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(entity.map(OrderResponse::new).get());
     }
 
+    @Operation(summary = "Donate money")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Donated successfully",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponse.class))})
+    })
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> donate(@Valid @RequestBody DonateRequest donateRequest){
         UserEntity user = paymentService.donate(donateRequest.getCash());
