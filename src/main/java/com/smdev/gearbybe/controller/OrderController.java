@@ -49,4 +49,12 @@ public class OrderController {
         );
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity cancel(@PathVariable Long id){
+        if(orderService.cancel(id)){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }

@@ -9,17 +9,16 @@ import com.smdev.gearbybe.model.entity.UserEntity;
 import com.smdev.gearbybe.repository.OrderPositionRepository;
 import com.smdev.gearbybe.repository.OrderRepository;
 import com.smdev.gearbybe.repository.PartRepository;
+import com.smdev.gearbybe.repository.UserRepository;
 import com.smdev.gearbybe.service.OrderService;
 import com.smdev.gearbybe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.CredentialNotFoundException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,17 +27,20 @@ public class OrderServiceImpl implements OrderService {
     private final OrderPositionRepository orderPositionRepository;
     private final OrderRepository orderRepository;
     private final PartRepository partRepository;
+    private final UserRepository userRepository;
     private final UserService userService;
 
     @Autowired
     public OrderServiceImpl(OrderPositionRepository orderPositionRepository,
                             OrderRepository orderRepository,
                             PartRepository partRepository,
-                            UserService userService) {
+                            UserService userService,
+                            UserRepository userRepository) {
         this.orderPositionRepository = orderPositionRepository;
         this.orderRepository = orderRepository;
         this.partRepository = partRepository;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -83,5 +85,41 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderEntity> getAllForCurrent() {
         Long userId = userService.getCurrent().get().getId();
         return getAllForUserById(userId);
+    }
+
+    @Override
+    public boolean cancel(Long id) {
+        Optional<OrderEntity> orderEntity = orderRepository.findById(id);
+        UserEntity user = userService.getCurrent().get();
+
+        if(orderEntity.isEmpty() || orderEntity.get().getOwner().getId() != user.getId()){
+            return false;
+        }
+
+        OrderEntity order = orderEntity.get();
+        if(!order.isApproved()){
+            user.removeOrder(order);
+            userRepository.save(user);
+            List<OrderPositionEntity> orderPositions = order.getOrderPositions();
+            for(OrderPositionEntity o : orderPositions){
+                o.setPart(null);
+                order.removeOrderPosition(o);
+                orderPositionRepository.delete(o);
+            }
+            order.setOwner(null);
+            orderRepository.delete(order);
+        }
+
+        return true;
+    }
+
+    @Override
+    public Optional<OrderEntity> updateOrder(Long id, OrderCreateRequest orderCreateRequest) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<OrderEntity> approve(Long id) {
+        return Optional.empty();
     }
 }
