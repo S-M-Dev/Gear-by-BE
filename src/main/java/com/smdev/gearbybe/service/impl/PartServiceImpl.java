@@ -8,9 +8,12 @@ import com.smdev.gearbybe.model.entity.PartEntity;
 import com.smdev.gearbybe.repository.PartRepository;
 import com.smdev.gearbybe.service.PartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -55,10 +58,14 @@ public class PartServiceImpl implements PartService {
 
     @Override
     public List<PartEntity> search(PartSearchRequest partSearchRequest) {
-        return partRepository.findAllByNameLikeAndCarModelAndCarMark(
-                partSearchRequest.getName(),
-                partSearchRequest.getCarModel(),
-                partSearchRequest.getCarMark()
-        );
+        PartEntity probe = PartMapper.searchToPart(partSearchRequest);
+        ExampleMatcher exampleMatcher = partSearchRequest.toMatcher();
+
+        if(Objects.isNull(exampleMatcher)){
+            return getAll();
+        }
+
+        Example<PartEntity> partEntityExample = Example.of(probe, exampleMatcher);
+        return partRepository.findAll(partEntityExample);
     }
 }
