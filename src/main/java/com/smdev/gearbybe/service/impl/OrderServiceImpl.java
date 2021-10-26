@@ -115,6 +115,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Optional<OrderEntity> updateOrder(Long id, OrderCreateRequest orderCreateRequest) {
+        if(cancel(id)){
+           return create(orderCreateRequest);
+        }
         return Optional.empty();
     }
 
