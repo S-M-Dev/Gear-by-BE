@@ -3,10 +3,8 @@ package com.smdev.gearbybe.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,5 +20,7 @@ public class UserEntity {
     private double cash;
     private String address;
     private UserRole role;
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    private List<OrderEntity> orders;
 
 }
