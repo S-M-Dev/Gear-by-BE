@@ -120,6 +120,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Optional<OrderEntity> approve(Long id) {
-        return Optional.empty();
+        UserEntity current = userService.getCurrent().get();
+        Optional<OrderEntity> orderOptional = orderRepository.findById(id);
+        if(orderOptional.isEmpty() || orderOptional.get().getOwner().getId() != current.getId()){
+            return Optional.empty();
+        }
+
+        OrderEntity order = orderOptional.get();
+        order.setApproved(true);
+        orderRepository.save(order);
+
+        return Optional.of(order);
     }
 }
