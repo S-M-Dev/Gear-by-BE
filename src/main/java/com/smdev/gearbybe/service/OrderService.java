@@ -11,5 +11,6 @@ import java.util.Optional;
 @Service
 public interface OrderService {
     List<OrderEntity> getAllForUserById(Long userId);
+    List<OrderEntity> getAllForCurrent();
     Optional<OrderEntity> create(OrderCreateRequest orderCreateRequest);
 }

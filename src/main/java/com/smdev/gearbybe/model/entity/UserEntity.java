@@ -1,11 +1,12 @@
 package com.smdev.gearbybe.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,14 +16,13 @@ public class UserEntity {
     private Long id;
     private String email;
     private String fullName;
-    @JsonIgnore
     private String password;
     private String phoneNumber;
     private double cash;
     private String address;
     private UserRole role;
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
-    private Set<OrderEntity> orders = new HashSet<>();
+    private List<OrderEntity> orders = new LinkedList<>();
 
     public void addOrder(OrderEntity orderEntity){
         orders.add(orderEntity);

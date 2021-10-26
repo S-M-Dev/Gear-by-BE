@@ -1,4 +1,4 @@
-package com.smdev.gearbybe.model.dto;
+package com.smdev.gearbybe.model.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

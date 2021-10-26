@@ -1,8 +1,9 @@
 package com.smdev.gearbybe.controller;
 
-import com.smdev.gearbybe.model.dto.JwtResponse;
+import com.smdev.gearbybe.model.dto.response.JwtResponse;
 import com.smdev.gearbybe.model.dto.LoginRequest;
 import com.smdev.gearbybe.model.dto.RegistrationRequest;
+import com.smdev.gearbybe.model.dto.response.UserResponse;
 import com.smdev.gearbybe.model.entity.UserEntity;
 import com.smdev.gearbybe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserEntity getCurrent(){
-        return userService.getCurrent().get();
+    public UserResponse getCurrent(){
+        return userService.getCurrent().map(UserResponse::new).get();
     }
 }

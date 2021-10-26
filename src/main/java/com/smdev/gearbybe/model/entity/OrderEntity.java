@@ -4,8 +4,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,7 +19,7 @@ public class OrderEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity owner;
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<OrderPositionEntity> orderPositions = new HashSet<>();
+    private List<OrderPositionEntity> orderPositions = new LinkedList<>();
 
     public void addOrderPosition(OrderPositionEntity orderPositionEntity){
         orderPositions.add(orderPositionEntity);

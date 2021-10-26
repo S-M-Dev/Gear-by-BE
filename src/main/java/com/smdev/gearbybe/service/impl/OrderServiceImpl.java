@@ -78,4 +78,10 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(orderEntity);
         return Optional.of(orderEntity);
     }
+
+    @Override
+    public List<OrderEntity> getAllForCurrent() {
+        Long userId = userService.getCurrent().get().getId();
+        return getAllForUserById(userId);
+    }
 }
