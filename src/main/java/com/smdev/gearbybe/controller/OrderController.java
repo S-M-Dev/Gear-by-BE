@@ -14,7 +14,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.OPTIONS})
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST,
+        RequestMethod.OPTIONS,
+        RequestMethod.GET,
+        RequestMethod.PUT,
+        RequestMethod.DELETE})
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
@@ -55,6 +59,18 @@ public class OrderController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping(value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderResponse> update(@PathVariable Long id,
+                                                @Valid @RequestBody OrderCreateRequest orderCreateRequest){
+        Optional<OrderEntity> result = orderService.updateOrder(id, orderCreateRequest);
+        if(result.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(result.map(OrderResponse::new).get());
     }
 
 }
