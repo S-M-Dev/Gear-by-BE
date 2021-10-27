@@ -13,4 +13,5 @@ public interface UserService {
     JwtResponse register(RegistrationRequest registrationRequest);
     JwtResponse login(LoginRequest loginRequest);
     Optional<UserEntity> getCurrent();
+    JwtResponse resetPassword(Long id, String password);
 }

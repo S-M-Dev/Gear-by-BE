@@ -74,6 +74,23 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(authentication.getName());
     }
 
+    @Override
+    public JwtResponse resetPassword(Long id, String password) {
+        Optional<UserEntity> userEntity = userRepository.findById(id);
+        if(userEntity.isEmpty()){
+            return new JwtResponse("");
+        }
+
+        UserEntity user = userEntity.get();
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+        authenticate(userDetails);
+        String jwt = JWTUtils.generate(userDetails);
+        return new JwtResponse(jwt);
+    }
+
     private void authenticate(UserDetails userDetails){
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(

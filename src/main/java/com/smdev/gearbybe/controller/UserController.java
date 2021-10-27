@@ -1,10 +1,10 @@
 package com.smdev.gearbybe.controller;
 
-import com.smdev.gearbybe.model.dto.response.JwtResponse;
 import com.smdev.gearbybe.model.dto.LoginRequest;
+import com.smdev.gearbybe.model.dto.PasswordResetRequest;
 import com.smdev.gearbybe.model.dto.RegistrationRequest;
+import com.smdev.gearbybe.model.dto.response.JwtResponse;
 import com.smdev.gearbybe.model.dto.response.UserResponse;
-import com.smdev.gearbybe.model.entity.UserEntity;
 import com.smdev.gearbybe.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,8 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
-@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.OPTIONS})
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PATCH, RequestMethod.OPTIONS})
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -70,4 +71,20 @@ public class UserController {
     public UserResponse getCurrent(){
         return userService.getCurrent().map(UserResponse::new).get();
     }
+
+    @Operation(summary = "Reset password for user")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Changed successfully",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = JwtResponse.class))}),
+            @ApiResponse(responseCode = "401", description = "Invalid id")
+    })
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity resetPassword(@PathVariable Long id, @Valid @RequestBody PasswordResetRequest passwordResetRequest){
+        JwtResponse response = userService.resetPassword(id, passwordResetRequest.getPassword());
+        if(response.getToken().isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
+    }
+
 }
