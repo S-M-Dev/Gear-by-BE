@@ -50,17 +50,19 @@ public class CodeServiceImpl implements CodeService {
     }
 
     @Override
-    public boolean activate(String email, String code) {
+    public Long activate(String email, String code) {
         Optional<CodeEntity> codeEntity = codeRepository.findByUserEntity_Email(email);
         if(codeEntity.isEmpty()){
-            return false;
+            return -1L;
         }
+
+        Long userId = codeEntity.get().getUserEntity().getId();
 
         if(codeEntity.get().getCode().equals(code)){
             codeRepository.deleteById(codeEntity.get().getId());
-            return true;
+            return userId;
         }
 
-        return false;
+        return -1L;
     }
 }
