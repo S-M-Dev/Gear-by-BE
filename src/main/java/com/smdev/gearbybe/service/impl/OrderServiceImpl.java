@@ -131,6 +131,12 @@ public class OrderServiceImpl implements OrderService {
 
         OrderEntity order = orderOptional.get();
         order.setApproved(true);
+        order.getOrderPositions().forEach(pos -> {
+            int amount = pos.getAmount();
+            PartEntity part = pos.getPart();
+            part.setAmount(part.getAmount() - amount);
+            partRepository.save(part);
+        });
         orderRepository.save(order);
 
         return Optional.of(order);
