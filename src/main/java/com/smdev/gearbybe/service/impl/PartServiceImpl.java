@@ -2,7 +2,7 @@ package com.smdev.gearbybe.service.impl;
 
 import com.smdev.gearbybe.mapper.PartMapper;
 import com.smdev.gearbybe.model.dto.PartCreateRequest;
-import com.smdev.gearbybe.model.dto.PartReserveRequest;
+import com.smdev.gearbybe.model.dto.PartUpdateRequest;
 import com.smdev.gearbybe.model.dto.PartSearchRequest;
 import com.smdev.gearbybe.model.entity.PartEntity;
 import com.smdev.gearbybe.repository.PartRepository;
@@ -32,12 +32,12 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
-    public Optional<PartEntity> updateAmountOfParts(PartReserveRequest partReserveRequest) {
+    public Optional<PartEntity> updateAmountOfParts(PartUpdateRequest partReserveRequest) {
         Optional<PartEntity> partEntityOptional = partRepository.findById(partReserveRequest.getId());
 
         if(partEntityOptional.isPresent()){
             PartEntity partEntity = partEntityOptional.get();
-            partEntity.setAmount(partEntity.getAmount() - partReserveRequest.getReserve());
+            partEntity.setAmount(partReserveRequest.getAmount());
             partRepository.save(partEntity);
             partEntityOptional = Optional.of(partEntity);
         }

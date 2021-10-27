@@ -8,11 +8,11 @@ import javax.validation.constraints.Min;
 
 @Data
 @NoArgsConstructor
-public class PartReserveRequest {
+public class PartUpdateRequest {
     @JsonProperty(required = true)
     @Min(value = 1, message = "Part id cannot be less than one")
     private Long id;
     @JsonProperty(required = true)
-    @Min(value = 1, message = "Count of reserved parts cannot be less than one")
-    private int reserve;
+    @Min(value = 1, message = "Amount cannot be less than one")
+    private int amount;
 }

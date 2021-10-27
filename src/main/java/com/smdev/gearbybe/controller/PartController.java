@@ -1,9 +1,8 @@
 package com.smdev.gearbybe.controller;
 
 import com.smdev.gearbybe.model.dto.PartCreateRequest;
-import com.smdev.gearbybe.model.dto.PartReserveRequest;
+import com.smdev.gearbybe.model.dto.PartUpdateRequest;
 import com.smdev.gearbybe.model.dto.PartSearchRequest;
-import com.smdev.gearbybe.model.dto.response.OrderResponse;
 import com.smdev.gearbybe.model.entity.PartEntity;
 import com.smdev.gearbybe.service.PartService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -85,7 +84,7 @@ public class PartController {
             @ApiResponse(responseCode = "404", description = "Part not found")
     })
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PartEntity> updateAmount(@Valid @RequestBody PartReserveRequest partReserveRequest){
+    public ResponseEntity<PartEntity> updateAmount(@Valid @RequestBody PartUpdateRequest partReserveRequest){
         Optional<PartEntity> partEntity = partService.updateAmountOfParts(partReserveRequest);
         if(partEntity.isEmpty()){
             return ResponseEntity.notFound().build();
