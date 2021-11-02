@@ -6,6 +6,7 @@ import com.smdev.gearbybe.model.dto.PartSearchRequest;
 import com.smdev.gearbybe.model.entity.PartEntity;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,5 +15,5 @@ public interface PartService {
     List<PartEntity> getAll();
     Optional<PartEntity> updateAmountOfParts(PartUpdateRequest partReserveRequest);
     Optional<PartEntity> create(PartCreateRequest partCreateRequest);
-    List<PartEntity> search(PartSearchRequest partSearchRequest);
+    List<PartEntity> search(@Valid PartSearchRequest partSearchRequest);
 }

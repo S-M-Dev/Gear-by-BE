@@ -12,6 +12,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
-    public List<PartEntity> search(PartSearchRequest partSearchRequest) {
+    public List<PartEntity> search(@Valid PartSearchRequest partSearchRequest) {
         PartEntity probe = PartMapper.searchToPart(partSearchRequest);
         ExampleMatcher exampleMatcher = partSearchRequest.toMatcher();
 

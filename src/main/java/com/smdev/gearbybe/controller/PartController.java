@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,9 +54,11 @@ public class PartController {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = PartEntity.class))}),
             @ApiResponse(responseCode = "204", description = "No parts found")
     })
-    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PartEntity>> search(@Valid @RequestBody PartSearchRequest partSearchRequest){
-        List<PartEntity> parts = partService.search(partSearchRequest);
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PartEntity>> search(@RequestParam(required = false, defaultValue = "") String name,
+                                                   @RequestParam(required = false, defaultValue = "") String carModel,
+                                                   @RequestParam(required = false, defaultValue = "") String carMark){
+        List<PartEntity> parts = partService.search(new PartSearchRequest(name, carModel, carMark));
         if(parts.isEmpty()){
             return ResponseEntity.noContent().build();
         }

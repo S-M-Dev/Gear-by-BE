@@ -1,5 +1,6 @@
 package com.smdev.gearbybe.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.ExampleMatcher;
@@ -9,6 +10,7 @@ import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatc
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class PartSearchRequest {
     private String name = "";
     private String carModel = "";
