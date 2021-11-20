@@ -1,6 +1,7 @@
 package com.smdev.gearbybe.service.impl;
 
 import com.smdev.gearbybe.mapper.UserMapper;
+import com.smdev.gearbybe.model.dto.UserDataInput;
 import com.smdev.gearbybe.model.dto.response.JwtResponse;
 import com.smdev.gearbybe.model.dto.LoginRequest;
 import com.smdev.gearbybe.model.dto.RegistrationRequest;
@@ -89,6 +90,17 @@ public class UserServiceImpl implements UserService {
         authenticate(userDetails);
         String jwt = JWTUtils.generate(userDetails);
         return new JwtResponse(jwt);
+    }
+
+    @Override
+    public UserEntity setData(UserDataInput userDataInput) {
+        UserEntity current = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).get();
+        current.setFullName(userDataInput.getFullName());
+        current.setAddress(userDataInput.getAddress());
+        current.setPhoneNumber(userDataInput.getPhoneNumber());
+        userRepository.save(current);
+
+        return current;
     }
 
     private void authenticate(UserDetails userDetails){

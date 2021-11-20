@@ -3,8 +3,10 @@ package com.smdev.gearbybe.controller;
 import com.smdev.gearbybe.model.dto.LoginRequest;
 import com.smdev.gearbybe.model.dto.PasswordResetRequest;
 import com.smdev.gearbybe.model.dto.RegistrationRequest;
+import com.smdev.gearbybe.model.dto.UserDataInput;
 import com.smdev.gearbybe.model.dto.response.JwtResponse;
 import com.smdev.gearbybe.model.dto.response.UserResponse;
+import com.smdev.gearbybe.model.entity.UserEntity;
 import com.smdev.gearbybe.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -87,4 +89,9 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Set user data")
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserEntity> info(@Valid @RequestBody UserDataInput userDataInput){
+        return ResponseEntity.ok(userService.setData(userDataInput));
+    }
 }
