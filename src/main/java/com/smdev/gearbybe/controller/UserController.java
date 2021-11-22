@@ -20,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PATCH, RequestMethod.OPTIONS, RequestMethod.PUT})
 @RestController
@@ -90,8 +89,13 @@ public class UserController {
     }
 
     @Operation(summary = "Set user data")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Changed successfully",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = JwtResponse.class))}),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserEntity> info(@Valid @RequestBody UserDataInput userDataInput){
-        return ResponseEntity.ok(userService.setData(userDataInput));
+    public ResponseEntity<UserResponse> info(@Valid @RequestBody UserDataInput userDataInput){
+        return ResponseEntity.ok(new UserResponse(userService.setData(userDataInput)));
     }
 }
