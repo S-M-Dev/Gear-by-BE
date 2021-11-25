@@ -1,6 +1,7 @@
 package com.smdev.gearbybe.service.impl;
 
 import com.smdev.gearbybe.mapper.UserMapper;
+import com.smdev.gearbybe.model.dto.PasswordResetRequest;
 import com.smdev.gearbybe.model.dto.UserDataInput;
 import com.smdev.gearbybe.model.dto.response.JwtResponse;
 import com.smdev.gearbybe.model.dto.LoginRequest;
@@ -76,14 +77,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JwtResponse resetPassword(Long id, String password) {
-        Optional<UserEntity> userEntity = userRepository.findById(id);
+    public JwtResponse resetPassword(PasswordResetRequest passwordResetRequest) {
+        Optional<UserEntity> userEntity = userRepository.findById(passwordResetRequest.getId());
         if(userEntity.isEmpty()){
             return new JwtResponse("");
         }
 
         UserEntity user = userEntity.get();
-        user.setPassword(passwordEncoder.encode(password));
+        user.setPassword(passwordEncoder.encode(passwordResetRequest.getPassword()));
         userRepository.save(user);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());

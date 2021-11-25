@@ -79,9 +79,9 @@ public class UserController {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = JwtResponse.class))}),
             @ApiResponse(responseCode = "401", description = "Invalid id")
     })
-    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity resetPassword(@PathVariable Long id, @Valid @RequestBody PasswordResetRequest passwordResetRequest){
-        JwtResponse response = userService.resetPassword(id, passwordResetRequest.getPassword());
+    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity resetPassword(@Valid @RequestBody PasswordResetRequest passwordResetRequest){
+        JwtResponse response = userService.resetPassword(passwordResetRequest);
         if(response.getToken().isEmpty()){
             return ResponseEntity.notFound().build();
         }

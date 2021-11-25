@@ -1,5 +1,6 @@
 package com.smdev.gearbybe.service;
 
+import com.smdev.gearbybe.model.dto.PasswordResetRequest;
 import com.smdev.gearbybe.model.dto.UserDataInput;
 import com.smdev.gearbybe.model.dto.response.JwtResponse;
 import com.smdev.gearbybe.model.dto.LoginRequest;
@@ -14,6 +15,6 @@ public interface UserService {
     JwtResponse register(RegistrationRequest registrationRequest);
     JwtResponse login(LoginRequest loginRequest);
     Optional<UserEntity> getCurrent();
-    JwtResponse resetPassword(Long id, String password);
+    JwtResponse resetPassword(PasswordResetRequest passwordResetRequest);
     UserEntity setData(UserDataInput userDataInput);
 }
