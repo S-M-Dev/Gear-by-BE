@@ -13,4 +13,5 @@ public class OrderCreateRequest {
     @Valid
     private List<OrderPositionDto> orderPositions;
     private Date deliveryDate;
+    private String address;
 }

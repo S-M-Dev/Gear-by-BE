@@ -16,6 +16,7 @@ public class OrderEntity {
     private Date createDate;
     private Date deliveryDate;
     private boolean approved;
+    private String address;
     @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity owner;
     @OneToMany(fetch = FetchType.EAGER)

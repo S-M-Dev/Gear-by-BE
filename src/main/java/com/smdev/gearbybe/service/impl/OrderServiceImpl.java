@@ -76,6 +76,7 @@ public class OrderServiceImpl implements OrderService {
         orderEntity.setApproved(false);
         orderEntity.setDeliveryDate(orderCreateRequest.getDeliveryDate());
         orderEntity.setOrderPositions(orderPositionEntities);
+        orderEntity.setAddress(orderCreateRequest.getAddress());
         owner.addOrder(orderEntity);
         orderRepository.save(orderEntity);
         return Optional.of(orderEntity);
